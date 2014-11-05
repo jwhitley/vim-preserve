@@ -1,18 +1,5 @@
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let l:win_view = winsaveview()
-  let l:last_search = getreg('/')
-
-  " execute the command without adding to the changelist/jumplist:
-  execute 'keepjumps ' . a:command
-
-  " Clean up: restore previous search history, and cursor position
-  call winrestview(l:win_view)
-  call setreg('/', l:last_search)
-endfunction
-
-" Delete trailing whitespace
-nnoremap <unique> <silent> <leader>$ :call Preserve("%s/\\s\\+$//e")<cr>
+" Kill trailing whitespace
+nnoremap <silent> <expr> <plug>(preserve-kill-trailing-whitespace) ":\<c-u>call pr#preserve("%s/\\s\\+$//e")\<cr>"
 
 " Reindent entire file
-nnoremap <unique> <silent> <leader>= :call Preserve("normal! gg=G")<cr>
+nnoremap <silent> <expr> <plug>(preserve-reindent-file) ":\<c-u>call pr#preserve("normal! gg=G")\<cr>"
